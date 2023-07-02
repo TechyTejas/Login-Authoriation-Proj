@@ -1,10 +1,17 @@
-import { useState, useRef } from 'react';
+import { useState, useRef ,useContext} from 'react';
 
 import classes from './AuthForm.module.css';
+import AuthContext from '../../store/auth-context';
+
 
 const AuthForm = () => {
+  
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  const authCtx = useContext(AuthContext)
+
   const [isLogin, setIsLogin] = useState(true);
   const[isLoading,setIsLoading]= useState(false);
 
@@ -27,7 +34,7 @@ const AuthForm = () => {
     fetch( url,
       {
         method: "POST",
-        body: JSON.stringify({
+        body: JSON.stringify({  //here we passing data
           email: enteredEmail,
           password: enteredPassword,
           returnSecureToken: true,
@@ -48,15 +55,18 @@ const AuthForm = () => {
           //if(data && data.error && data.error.message){
           //   errorMessage=data.error.message;
           // }
-          alert(errorMessage)
+          // alert(errorMessage)
           // console.log(data);
           throw new Error(errorMessage)
-        }).then((data) => {
-          console.log(data);
-        }).catch((err) => {
-          alert(err.message)
         })
       }
+    })
+    .then((data) => {
+      authCtx.login(data.idToken)  //here we passing that token which we getting from firbase
+      console.log(data)
+    })
+    .catch((err) => {
+      alert(err.message)
     })
   };
 
