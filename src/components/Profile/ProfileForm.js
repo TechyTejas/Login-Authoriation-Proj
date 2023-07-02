@@ -27,9 +27,11 @@ const ProfileForm = () => {
         },
       }
     ).then((res) => {
-      navigate('/');
+      navigate.replace('/');
     });
   };
+
+  
 
   return (
     <form className={classes.form} onSubmit={submitHandler}>
