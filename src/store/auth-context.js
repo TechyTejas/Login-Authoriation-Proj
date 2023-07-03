@@ -9,7 +9,8 @@ import React,{useState} from "react";
 
 
 export const AuthContextProvider = (props) => {
-    const [token,setToken] = useState(null)
+    const initialToken = localStorage.getItem('token')
+    const [token,setToken] = useState(initialToken)
 
     const userIsLoggedIn = !!token; // this convert true or false value into boolean value 
     //if token is string with not empty this will return true
@@ -17,11 +18,13 @@ export const AuthContextProvider = (props) => {
 
     const loginHandler = (token) => {
        setToken(token)
-       console.log(token)
+       localStorage.setItem('token', token);
+    //    console.log(token)
     }
 
     const logoutHandler = () => {
        setToken(null)
+       localStorage.removeItem('token')
     }
 
     const contextValue = {
