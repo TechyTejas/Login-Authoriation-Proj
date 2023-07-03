@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 
  const AuthContext = React.createContext({
     token:"",
@@ -26,6 +26,18 @@ export const AuthContextProvider = (props) => {
        setToken(null)
        localStorage.removeItem('token')
     }
+    
+    //when ever user run this compo useEffect will run along wiht it
+    // when user logged in the token will be set to lcoalstroage
+    useEffect(() => {
+        const tokenExpirationTimer = setTimeout(() => {
+          logoutHandler();
+        }, 5 * 60 * 1000); // 5 minutes in milliseconds
+    
+        return () => {
+          clearTimeout(tokenExpirationTimer);
+        };
+      }, [token]);
 
     const contextValue = {
         token: token,
